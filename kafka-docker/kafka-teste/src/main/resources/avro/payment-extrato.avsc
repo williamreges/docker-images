@@ -1,0 +1,53 @@
+{
+  "type": "record",
+  "name": "Payment",
+  "namespace": "com.example.kafkateste.core.domain",
+  "fields": [
+    {
+      "name": "data",
+      "type": {
+        "type": "record",
+        "name": "PaymentData",
+        "fields": [
+          {
+            "name": "extratos",
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "Extrato",
+                "namespace": "com.example.kafkateste.core.domain",
+                "fields": [
+                  {
+                    "name": "cpf",
+                    "type": "string"
+                  },
+                  {
+                    "name": "valor",
+                    "type": "float"
+                  },
+                  {
+                    "name": "status_pagamento",
+                    "type": "boolean"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "cpf",
+            "type": "string"
+          },
+          {
+            "name": "conta",
+            "type": "string"
+          },
+          {
+            "name": "agencia",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
