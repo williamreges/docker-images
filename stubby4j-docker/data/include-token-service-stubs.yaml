@@ -1,0 +1,9 @@
+-  request:
+     method: GET
+     url: /api/v1/accounts/1
+
+   response:
+     status: 200
+     headers:
+       content-type: application/json
+     file: json/token.response.json

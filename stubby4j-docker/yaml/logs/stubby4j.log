@@ -1,0 +1,40 @@
+2022-11-17T12:23:39,994+00:00 DEBUG i.g.a.s.f.MainYamlScanner Main YAML scan enabled, watching /home/stubby4j/data/smoke-tests-stubs.yaml.
+2022-11-17T12:23:39,999+00:00 DEBUG i.g.a.s.f.ExternalFilesScanner External file scan enabled, watching external files referenced from /home/stubby4j/data/smoke-tests-stubs.yaml.
+2022-11-17T12:23:40,006+00:00 DEBUG i.g.a.s.Main stubby4j successfully started after 862 milliseconds.
+2022-11-17T12:23:40,007+00:00 DEBUG i.g.a.s.Main Admin portal:
+--------------------------------------------------------------------------------------------------------
+ > http://0.0.0.0:8891		Admin portal
+ > http://0.0.0.0:8891/status		Admin portal status
+
+
+Available insecure endpoints:
+--------------------------------------------------------------------------------------------------------
+ > http://0.0.0.0:8884		HTTP/1.1 stubs portal
+ > http://0.0.0.0:8884		HTTP/2 over TCP (h2c) stubs portal
+ > ws://0.0.0.0:8884/ws		HTTP/1.1 WebSockets stubs portal
+
+
+TLS layer configuration:
+--------------------------------------------------------------------------------------------------------
+ > Supported TLS protocol versions: [TLSv1, TLSv1.3, TLSv1.2, TLSv1.1] with ALPN extension on HTTP/2
+ > TLS layer configured using internal self-signed certificate
+
+
+Available secure endpoints:
+--------------------------------------------------------------------------------------------------------
+ > https://0.0.0.0:7445		HTTP/2 over TLS (h2) stubs portal
+
+2022-11-17T12:23:40,007+00:00 INFO i.g.a.s.Main Quit: ctrl-c
+2022-11-17T12:23:40,003+00:00 ERROR i.g.a.s.f.MainIncludedYamlScanner Could not perform live main YAML scan with included YAMLs.
+java.nio.file.NoSuchFileException: /home/stubby4j/data/smoke-tests-stubs.yaml
+	at sun.nio.fs.UnixException.translateToIOException(UnixException.java:92) ~[?:?]
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111) ~[?:?]
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:116) ~[?:?]
+	at sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:219) ~[?:?]
+	at java.nio.file.Files.newByteChannel(Files.java:371) ~[?:?]
+	at java.nio.file.Files.newByteChannel(Files.java:422) ~[?:?]
+	at java.nio.file.spi.FileSystemProvider.newInputStream(FileSystemProvider.java:420) ~[?:?]
+	at java.nio.file.Files.newInputStream(Files.java:156) ~[?:?]
+	at io.github.azagniotov.stubby4j.utils.FileUtils.constructInputStream(FileUtils.java:127) ~[stubby4j.jar:7.5.3-SNAPSHOT]
+	at io.github.azagniotov.stubby4j.filesystem.MainIncludedYamlScanner.run(MainIncludedYamlScanner.java:40) [stubby4j.jar:7.5.3-SNAPSHOT]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
