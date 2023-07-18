@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    hostname: sqlserver
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      MSSQL_SA_PASSWORD: "user@1234" # user and passowrd
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_AGENT_ENABLED: "true" # habilita cdc
+
+  mssqltools:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./scripts/db100:/tmp
+
+    command: /bin/bash ./tmp/db100-00-init.sh
