@@ -1,8 +1,8 @@
-version: '3'
+version: '3.8'
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     hostname: sqlserver
     container_name: sqlserver
     ports:
@@ -13,11 +13,12 @@ services:
       MSSQL_PID: "Developer"
       MSSQL_AGENT_ENABLED: "true" # habilita cdc
 
-  mssqltools:
+  sqltools:
     image: mcr.microsoft.com/mssql-tools
+    hostname: sqltools
+    container_name: sqltools
     depends_on:
       - sqlserver
     volumes:
-      - ./scripts/db100:/tmp
-
+      - "./scripts/db100:/tmp"
     command: /bin/bash ./tmp/db100-00-init.sh
