@@ -1,2 +1,4 @@
 /kafka-docker/.idea/
-
+/sqlserver-docker/.idea/
+/.idea/
+/stubby4j-docker/data/logs/

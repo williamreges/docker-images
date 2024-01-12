@@ -1,3 +1,4 @@
+#!/bin/sh
 docker run -d -p 9000:9000 -p 9443:9443 \
 --name portainer \
 --restart=always \
