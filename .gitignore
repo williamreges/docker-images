@@ -2,3 +2,4 @@
 /sqlserver-docker/.idea/
 /.idea/
 /stubby4j-docker/data/logs/
+/localstack-docker/volume/
