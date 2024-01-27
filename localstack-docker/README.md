@@ -143,7 +143,7 @@ aws s3 rb s3://sample-bucket2 \
 
 > #### Obs: 
 > Paramais informações sobre como utilizar os comandos S3 do AWS Cli veja em 
-> https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html#
+> [AWS CLI Command Reference S3](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html#)
 ---
 
 #### [Comece com Lambda no LocalStack ](https://docs.localstack.cloud/user-guide/aws/lambda)
@@ -213,7 +213,7 @@ aws lambda delete-function \
 
 #### [Comece a usar o DynamoDB no LocalStack ](https://docs.localstack.cloud/user-guide/aws/dynamodb)
 
-Você pode criar uma tabela do DynamoDB usando o `create-table`. 
+1. Você pode criar uma tabela do DynamoDB usando o `create-table`. 
 
 ```shell
 aws dynamodb create-table \
@@ -224,16 +224,16 @@ aws dynamodb create-table \
     --region ap-south-1 \
     --endpoint-url=http://localhost:4566 
 ```
----
 
-Listar Tabelas com `ListTables`
+
+2. Listar Tabelas com `list-tables`:
 
 ```shell
 aws  dynamodb list-tables \
     --region ap-south-1 \
     --endpoint-url=http://localhost:4566
 ```
-Inserir registro com `PutItem`
+3. Inserir registro com `put-item`:
 
 ```shell
 aws  dynamodb put-item \
@@ -243,7 +243,7 @@ aws  dynamodb put-item \
     --endpoint-url=http://localhost:4566
 ```
 
-Consulte quantidade de itens na tabela com `DescriteTable`
+4. Consulte quantidade de itens na tabela com `descrite-table`:
 ```shell
 aws dynamodb describe-table \
     --table-name global01 \
@@ -258,17 +258,18 @@ aws dynamodb describe-table \
 > acesse [Getting started with DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
 > direto na doc da AWS ou [AWS CLI Command Referenc e DynamoDb](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html).
 
+---
+
 #### [Comece com o Simple Queue Service (SQS) no LocalStack](https://docs.localstack.cloud/user-guide/aws/sqs/)
 
-Para criar uma fila SQS, use o CreateQueueAPI. Execute o seguinte comando para criar uma fila chamada localstack-queue:
-
+1. Para criar uma fila SQS, use o `create-queue`: 
 ```shell
 aws sqs create-queue \
 --queue-name localstack-queue \
 --endpoint-url=http://localhost:4566  
 ```
 
-Listar SQS
+2. Listar SQS com `list-queues`:
 
 ```shell
 aws sqs list-queues \
@@ -283,13 +284,13 @@ aws sqs list-queues \
 
 #### [Comece com o Simple Notification Service (SNS) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/sns/)
 
-Para criar um tópico SNS, use o `create-topic`:
+1. Para criar um tópico SNS, use o `create-topic`:
 
 ```shell
 aws sns create-topic --name localstack-topic --endpoint-url=http://localhost:4566 
 ```
 
-Você pode definir o atributo do tópico SNS usando o tópico SNS criado anteriormente usando o comando `set-topic-attributes`.
+2. Você pode definir o atributo do tópico SNS usando o tópico SNS criado anteriormente usando o comando `set-topic-attributes`.
 ```shell
 aws sns set-topic-attributes \
    --topic-arn arn:aws:sns:sa-east-1:000000000000:localstack-topic \
@@ -298,19 +299,19 @@ aws sns set-topic-attributes \
    --endpoint-url=http://localhost:4566
 ```
 
-Você pode listar todos os tópicos do SNS usando o `list-topics
+3. Você pode listar todos os tópicos do SNS usando o `list-topics
 ```shell
 aws sns list-topics --endpoint-url=http://localhost:4566 
 ```
 
-Você pode obter atributos para um único tópico SNS usando o `get-topic-attributes`
+4. Você pode obter atributos para um único tópico SNS usando o `get-topic-attributes`
 ```shell
 aws sns get-topic-attributes \
    --topic-arn arn:aws:sns:sa-east-1:000000000000:localstack-topic \
    --endpoint-url=http://localhost:4566 
 ```
 
-Para publicar mensagens no tópico SNS, crie um novo arquivo chamado messages.txt em seu diretório atual e adicione algum 
+5. Para publicar mensagens no tópico SNS, crie um novo arquivo chamado messages.txt em seu diretório atual e adicione algum 
 conteúdo. Execute o seguinte comando para publicar mensagens no tópico SNS usando o `publish`:
 ```shell
 aws sns publish \
@@ -319,7 +320,7 @@ aws sns publish \
    --endpoint-url=http://localhost:4566 
 ```
 
-Você pode se inscrever no tópico SNS usando o `subscribe`:
+6. Você pode se inscrever no tópico SNS usando o `subscribe`:
 ```shell
 aws sns subscribe \
    --topic-arn arn:aws:sns:sa-east-1:000000000000:localstack-topic \
