@@ -1,5 +1,6 @@
 # LocalStack
 
+
 ---
 
 LocalStack é um emulador de serviço em nuvem executado em um único contêiner em seu laptop ou 
@@ -13,7 +14,8 @@ nos auxiliar como desenvolvedores de serviços de Núvem AWS.
 
 - Overview: https://docs.localstack.cloud/overview  
 - Getting Started: https://docs.localstack.cloud/getting-started/
-- User Guides: https://docs.localstack.cloud/user-guide 
+- User Guides: https://docs.localstack.cloud/user-guide
+- LocalStack Desktop: https://app.localstack.cloud
 
 ---
 ### Requisitos
@@ -22,11 +24,37 @@ Nos exemplos desse readme estaremos utilizaodo docker para utilizar uma imagem d
 os recursos da AWS localmente. Também utilizaremos o AWS CLI para iteragir com o simulador através do 
 parâmetro  `--endpoint-url=http://localhost:4566` que apontará os comandos do CLI para a porta container.
 
-1. Instale a [imagen do LocalStack](https://docs.localstack.cloud/getting-started/installation/#docker-compose) pelo 
-`docker compose`:
+1. Instale a [imagen do LocalStack](docker-compose.yml) pelo 
+`manifesto`:
+
+```yaml
+version: "3.8"
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+     - SERVICES=${SERVICES- }
+     - DEBUG=${DEBUG- }
+     - DATA_DIR=${DATA_DIR- }
+     - PORT_WEB_UI=${PORT_WEB_UI- }
+     - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+     - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+     - DOCKER_HOST=unix:///var/run/docker.sock
+     - HOST_TMP_FOLDER=${TMPDIR}
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+```
+Rode o comando docker compose em cims desse manifesto:
 ```shell
 docker-compose up -d
 ```
+
 ou instale pelo `docker run` direto
 ```shell
 docker run \
@@ -57,9 +85,12 @@ Default output format [None]: json
 
 ---
 
-### Serviços Locais da AWS
+### Serviços Locais da AWS 
 
 #### [Comece com S3 no LocalStack ](https://docs.localstack.cloud/user-guide/aws/s3)
+
+Simple Storage Service (S3) é um serviço de armazenamento de objetos que fornece uma solução altamente escalonável e durável para armazenamento e recuperação de dados.
+
 
 1. Criando  Buckets com `mb`:
 
@@ -141,15 +172,25 @@ aws s3 rb s3://sample-bucket2 \
 --endpoint-url=http://localhost:4566
 ```
 
-> #### Obs: 
-> Paramais informações sobre como utilizar os comandos S3 do AWS Cli veja em 
-> [AWS CLI Command Reference S3](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html#)
+> #### Ajuda:
+> Veja o recurso de forma visual em:
+> - [LocalStack Desktop S3](https://app.localstack.cloud/inst/default/resources/s3)
+> 
+> Veja mais assunto avançado em:
+> - [Doc AWS S3](https://docs.aws.amazon.com/s3/?icmpid=docs_homepage_featuredsvcs)
+> - [AWS CLI Command Reference S3](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html#)
+
+
 ---
 
 #### [Comece com Lambda no LocalStack ](https://docs.localstack.cloud/user-guide/aws/lambda)
 
+AWS Lambda é uma plataforma de função como serviço (FaaS) sem servidor que permite executar código em sua linguagem de programação preferida no ecossistema AWS. O AWS Lambda dimensiona automaticamente seu código para atender à demanda e cuida do provisionamento, gerenciamento e manutenção do servidor. O AWS Lambda permite dividir seu aplicativo em funções menores e independentes que se integram perfeitamente aos serviços da AWS.
+
 1. Para criar uma nova função Lambda, crie um novo arquivo chamado `index.js` com o seguinte código a ser 
 executado dentro do Lambda:
+
+
 ```shell
 cat << EOF > index.js
 
@@ -205,13 +246,19 @@ aws lambda delete-function \
 --endpoint-url=http://localhost:4566 
 ```
 
-> #### Obs:
-> Para mais orientações sobre uso prático do AWS CLI na ferramenta Lambda acesse o link
-> direto na doc da AWS ou [AWS CLI Command Reference Lambda](https://docs.aws.amazon.com/cli/latest/reference/lambda/)
-> ou a doc [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html)
----
+> #### Ajuda:
+> Veja o recurso de forma visual em:
+> - [LocalStack Desktop Lambda](https://app.localstack.cloud/inst/default/resources/lambda/functions)
+>
+> Veja mais assunto avançado em:
+> - [Doc AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html)
+> - [AWS CLI Command Reference Lambda](https://docs.aws.amazon.com/cli/latest/reference/lambda/)
 
+---
+ 
 #### [Comece a usar o DynamoDB no LocalStack ](https://docs.localstack.cloud/user-guide/aws/dynamodb)
+
+DynamoDB é um serviço de banco de dados NoSQL totalmente gerenciado fornecido pela AWS. Ele oferece uma maneira flexível e altamente escalável de armazenar e recuperar dados, tornando-o adequado para uma ampla gama de aplicações. O DynamoDB fornece um armazenamento de dados de chave-valor rápido e escalonável com suporte para replicação, escalonamento automático, criptografia de dados em repouso e backup sob demanda, entre outros recursos.
 
 1. Você pode criar uma tabela do DynamoDB usando o `create-table`. 
 
@@ -253,14 +300,20 @@ aws dynamodb describe-table \
 ``` 
 
 
-> #### Obs: 
-> Para mais orientações sobre uso prático do AWS CLI na ferramenta Dynamodb acesse o link
-> acesse [Getting started with DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
-> direto na doc da AWS ou [AWS CLI Command Referenc e DynamoDb](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html).
+> #### Ajuda:
+> Veja o recurso de forma visual em:
+> - [LocalStack Desktop DynamoDb](https://app.localstack.cloud/inst/default/resources/dynamodb)
+>
+> Veja mais assunto avançado em:
+> - [Doc AWS DynamoDB](https://docs.aws.amazon.com/dynamodb/)
+> - [Getting started with DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
+> - [AWS CLI Command Referenc e DynamoDb](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html)
 
 ---
 
 #### [Comece com o Simple Queue Service (SQS) no LocalStack](https://docs.localstack.cloud/user-guide/aws/sqs/)
+
+Simple Queue Service (SQS) é um serviço de mensagens gerenciado oferecido pela AWS. Ele permite dissociar diferentes componentes de seus aplicativos, permitindo a comunicação assíncrona por meio de filas de mensagens. O SQS permite enviar, armazenar e receber mensagens de maneira confiável, com suporte para filas padrão e FIFO.
 
 1. Para criar uma fila SQS, use o `create-queue`: 
 ```shell
@@ -276,13 +329,19 @@ aws sqs list-queues \
 --endpoint-url=http://localhost:4566 
 ```
 
-> #### Obs:
-> Para mais orientações sobre uso prático do AWS CLI na ferramenta SQS acesse o link
-> direto na doc da AWS [AWS CLI Command Reference SQS](https://docs.aws.amazon.com/cli/latest/reference/sqs/).
+> #### Ajuda:
+> Veja o recurso de forma visual em:
+> - [LocalStack Desktop SQS](https://app.localstack.cloud/inst/default/resources/sqs)
+>
+> Veja mais assunto avançado em:
+> - [Doc AWS SQS](https://docs.aws.amazon.com/sqs/?icmpid=docs_homepage_appintegration)
+> - [AWS CLI Command Reference SQS](https://docs.aws.amazon.com/cli/latest/reference/sqs/).
 
 ---
 
 #### [Comece com o Simple Notification Service (SNS) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/sns/)
+
+Simple Notification Service (SNS) é um serviço de mensagens sem servidor que pode distribuir um grande número de mensagens para vários assinantes e pode ser usado para enviar mensagens para dispositivos móveis, endereços de e-mail e pontos de extremidade HTTP(s).
 
 1. Para criar um tópico SNS, use o `create-topic`:
 
@@ -331,20 +390,58 @@ aws sns subscribe \
 
 > #### Obs:
 > Para mais orientações sobre uso prático do AWS CLI na ferramenta SNS acesse o link
-> direto na doc da AWS [AWS CLI Command Reference SNS](https://docs.aws.amazon.com/cli/latest/reference/sns/).
+> direto na doc da AWS 
+
+> #### Ajuda:
+> Veja o recurso de forma visual em:
+> - [LocalStack Desktop SNS](https://app.localstack.cloud/inst/default/resources/sns)
+>
+> Veja mais assunto avançado em:
+> - [Doc AWS SNS](https://docs.aws.amazon.com/sns/?icmpid=docs_homepage_appintegration)
+> - [AWS CLI Command Reference SNS](https://docs.aws.amazon.com/cli/latest/reference/sns/).
+
+---
+
+#### [Comece com Simple System Manager(SSM) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/ssm/)
+
+O Systems Manager (SSM) é um serviço de gerenciamento fornecido pela Amazon Web Services que ajuda você a gerenciar e controlar com eficácia os recursos de sua infraestrutura. O SSM simplifica tarefas relacionadas ao gerenciamento de sistemas e aplicativos, aplicação de patches, configuração e automação, permitindo manter a integridade e a conformidade do seu ambiente.
+
+1. Para criar um parametro no SSM utilizando AWS Parameter Store, use o `ssm put-parameter`
+```shell
+aws ssm put-parameter \
+     --name "docslocalstack" \
+     --type "String" \
+     --value "https://docs.localstack.cloud/overview/" \
+     --overwrite \
+     --endpoint-url=http://localhost:4566
+```
+2. Você pode obter o parametro salvo com `ssm get-parameter`
+
+```shell
+aws ssm get-parameter \
+   --name "docslocalstack" \
+   --endpoint-url=http://localhost:4566
+```
+3. Você pode deleter um parametro com `ssm delete-parameter`
+
+```shell
+aws ssm delete-parameter \
+   --name "docslocalstack" \
+   --endpoint-url=http://localhost:4566
+```
+
+> #### Ajuda:
+>  Veja o recurso de forma visual em:
+> - [LocalStack Desktop SSM](https://app.localstack.cloud/inst/default/resources/ssm)
+>
+> Veja mais assunto avançado em:
+> - [Doc AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/)
+> - [Doc AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)
+> - [AWS CLI Command Referenc SSM](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ssm/index.html)
 
 ---
 
 ### Referencias
 
-LocalStack:
-- Overview: https://docs.localstack.cloud/overview
-- User Guides: https://docs.localstack.cloud/user-guide
-- [Comece com S3 no LocalStack ](https://docs.localstack.cloud/user-guide/aws/s3)
-- [Comece com Lambda no LocalStack ](https://docs.localstack.cloud/user-guide/aws/lambda)
-- [Comece a usar o DynamoDB no LocalStack ](https://docs.localstack.cloud/user-guide/aws/dynamodb)
-- [Comece com o Simple Queue Service (SQS) no LocalStack](https://docs.localstack.cloud/user-guide/aws/sqs/)
-- [Comece com o Simple Notification Service (SNS) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/sns/)
-
-AWS:
-- [AWS Cli Command Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
+- [AWS Documentation](https://docs.aws.amazon.com/)
+- [AWS CLI Command Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
