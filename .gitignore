@@ -3,3 +3,4 @@
 /.idea/
 /stubby4j-docker/data/logs/
 /localstack-docker/volume/
+/localstack-docker/upload-s3/
