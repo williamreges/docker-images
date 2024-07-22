@@ -98,7 +98,7 @@ Default output format [None]: json
 
 ### Serviços Locais da AWS 
 
-#### [Comece com S3 no LocalStack ](https://docs.localstack.cloud/user-guide/aws/s3)
+#### Comece com S3 no LocalStack
 
 Simple Storage Service (S3) é um serviço de armazenamento de objetos que fornece uma solução altamente escalonável e durável para armazenamento e recuperação de dados.
 
@@ -188,13 +188,14 @@ aws s3 rb s3://sample-bucket2 \
 > - [LocalStack Desktop S3](https://app.localstack.cloud/inst/default/resources/s3)
 > 
 > Veja mais assunto avançado em:
+> - [Comece com S3 no LocalStack ](https://docs.localstack.cloud/user-guide/aws/s3)
 > - [Doc AWS S3](https://docs.aws.amazon.com/s3/?icmpid=docs_homepage_featuredsvcs)
 > - [AWS CLI Command Reference S3](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html#)
 
 
 ---
 
-#### [Comece com Lambda no LocalStack ](https://docs.localstack.cloud/user-guide/aws/lambda)
+#### Comece com Lambda no LocalStack
 
 AWS Lambda é uma plataforma de função como serviço (FaaS) sem servidor que permite executar código em sua linguagem de programação preferida no ecossistema AWS. O AWS Lambda dimensiona automaticamente seu código para atender à demanda e cuida do provisionamento, gerenciamento e manutenção do servidor. O AWS Lambda permite dividir seu aplicativo em funções menores e independentes que se integram perfeitamente aos serviços da AWS.
 
@@ -262,12 +263,13 @@ aws lambda delete-function \
 > - [LocalStack Desktop Lambda](https://app.localstack.cloud/inst/default/resources/lambda/functions)
 >
 > Veja mais assunto avançado em:
+> - [Comece com Lambda no LocalStack ](https://docs.localstack.cloud/user-guide/aws/lambda)
 > - [Doc AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html)
 > - [AWS CLI Command Reference Lambda](https://docs.aws.amazon.com/cli/latest/reference/lambda/)
 
 ---
  
-#### [Comece a usar o DynamoDB no LocalStack ](https://docs.localstack.cloud/user-guide/aws/dynamodb)
+#### Comece a usar o DynamoDB no LocalStack
 
 DynamoDB é um serviço de banco de dados NoSQL totalmente gerenciado fornecido pela AWS. Ele oferece uma maneira flexível e altamente escalável de armazenar e recuperar dados, tornando-o adequado para uma ampla gama de aplicações. O DynamoDB fornece um armazenamento de dados de chave-valor rápido e escalonável com suporte para replicação, escalonamento automático, criptografia de dados em repouso e backup sob demanda, entre outros recursos.
 
@@ -316,13 +318,14 @@ aws dynamodb describe-table \
 > - [LocalStack Desktop DynamoDb](https://app.localstack.cloud/inst/default/resources/dynamodb)
 >
 > Veja mais assunto avançado em:
+> - [Comece a usar o DynamoDB no LocalStack ](https://docs.localstack.cloud/user-guide/aws/dynamodb)
 > - [Doc AWS DynamoDB](https://docs.aws.amazon.com/dynamodb/)
 > - [Getting started with DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
 > - [AWS CLI Command Referenc e DynamoDb](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html)
 
 ---
 
-#### [Comece com o Simple Queue Service (SQS) no LocalStack](https://docs.localstack.cloud/user-guide/aws/sqs/)
+#### Comece com o Simple Queue Service (SQS) no LocalStack
 
 Simple Queue Service (SQS) é um serviço de mensagens gerenciado oferecido pela AWS. Ele permite dissociar diferentes componentes de seus aplicativos, permitindo a comunicação assíncrona por meio de filas de mensagens. O SQS permite enviar, armazenar e receber mensagens de maneira confiável, com suporte para filas padrão e FIFO.
 
@@ -345,12 +348,13 @@ aws sqs list-queues \
 > - [LocalStack Desktop SQS](https://app.localstack.cloud/inst/default/resources/sqs)
 >
 > Veja mais assunto avançado em:
+> - [Comece com o Simple Queue Service (SQS) no LocalStack](https://docs.localstack.cloud/user-guide/aws/sqs/)
 > - [Doc AWS SQS](https://docs.aws.amazon.com/sqs/?icmpid=docs_homepage_appintegration)
 > - [AWS CLI Command Reference SQS](https://docs.aws.amazon.com/cli/latest/reference/sqs/).
 
 ---
 
-#### [Comece com o Simple Notification Service (SNS) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/sns/)
+#### Comece com o Simple Notification Service (SNS) no LocalStack
 
 Simple Notification Service (SNS) é um serviço de mensagens sem servidor que pode distribuir um grande número de mensagens para vários assinantes e pode ser usado para enviar mensagens para dispositivos móveis, endereços de e-mail e pontos de extremidade HTTP(s).
 
@@ -408,12 +412,13 @@ aws sns subscribe \
 > - [LocalStack Desktop SNS](https://app.localstack.cloud/inst/default/resources/sns)
 >
 > Veja mais assunto avançado em:
+> - [Comece com o Simple Notification Service (SNS) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/sns/)
 > - [Doc AWS SNS](https://docs.aws.amazon.com/sns/?icmpid=docs_homepage_appintegration)
 > - [AWS CLI Command Reference SNS](https://docs.aws.amazon.com/cli/latest/reference/sns/).
 
 ---
 
-#### [Comece com Simple System Manager(SSM) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/ssm/)
+#### Comece com Simple System Manager(SSM) no LocalStack
 
 O Systems Manager (SSM) é um serviço de gerenciamento fornecido pela Amazon Web Services que ajuda você a gerenciar e controlar com eficácia os recursos de sua infraestrutura. O SSM simplifica tarefas relacionadas ao gerenciamento de sistemas e aplicativos, aplicação de patches, configuração e automação, permitindo manter a integridade e a conformidade do seu ambiente.
 
@@ -446,6 +451,7 @@ aws ssm delete-parameter \
 > - [LocalStack Desktop SSM](https://app.localstack.cloud/inst/default/resources/ssm)
 >
 > Veja mais assunto avançado em:
+> - [Comece com Simple System Manager(SSM) no LocalStack ](https://docs.localstack.cloud/user-guide/aws/ssm/)
 > - [Doc AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/)
 > - [Doc AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)
 > - [AWS CLI Command Referenc SSM](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ssm/index.html)
