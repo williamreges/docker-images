@@ -17,8 +17,19 @@ nos auxiliar como desenvolvedores de serviços de Núvem AWS.
 - User Guides: https://docs.localstack.cloud/user-guide
 - LocalStack Desktop: https://app.localstack.cloud
 
+### Menu
+
+* [Requisitos - AWS CLI](#requisitos---aws-cli)
+* [Comece com S3 no LocalStack](#comece-com-s3-no-localstack)
+* [Comece com Lambda no LocalStack](#comece-com-lambda-no-localstack)
+* [Comece a usar o Dynamodb no LocalStack](#comece-a-usar-o-dynamodb-no-localstack)
+* [Comece com o Simple Queue Service(SQS) no LocalStack](#comece-com-o-simple-queue-service--sqs--no-localstack)
+* [Comece com Simple Notification Service(SNS) no LocalStack](#comece-com-o-simple-notification-service--sns--no-localstack)
+* [Comece com Simple System Manager(SSM) no LocalStack](#comece-com-o-simple-notification-service--sns--no-localstack)
+* [Referencias](#referencias)
+
 ---
-### Requisitos
+### Requisitos - AWS CLI
 
 Nos exemplos desse readme estaremos utilizaodo docker para utilizar uma imagem do localstack para simular
 os recursos da AWS localmente. Também utilizaremos o AWS CLI para iteragir com o simulador através do 
