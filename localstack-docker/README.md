@@ -23,9 +23,9 @@ nos auxiliar como desenvolvedores de serviços de Núvem AWS.
 * [Comece com S3 no LocalStack](#comece-com-s3-no-localstack)
 * [Comece com Lambda no LocalStack](#comece-com-lambda-no-localstack)
 * [Comece a usar o Dynamodb no LocalStack](#comece-a-usar-o-dynamodb-no-localstack)
-* [Comece com o Simple Queue Service(SQS) no LocalStack](#comece-com-o-simple-queue-service--sqs--no-localstack)
-* [Comece com Simple Notification Service(SNS) no LocalStack](#comece-com-o-simple-notification-service--sns--no-localstack)
-* [Comece com Simple System Manager(SSM) no LocalStack](#comece-com-o-simple-notification-service--sns--no-localstack)
+* [Comece com o Simple Queue Service(SQS) no LocalStack](#comece-com-o-simple-queue-service-sqs-no-localstack)
+* [Comece com Simple Notification Service(SNS) no LocalStack](#comece-com-o-simple-notification-service-sns-no-localstack)
+* [Comece com Simple System Manager(SSM) no LocalStack](#comece-com-simple-system-managerssm-no-localstack)
 * [Referencias](#referencias)
 
 ---
