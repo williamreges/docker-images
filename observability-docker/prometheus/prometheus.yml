@@ -1,5 +1,5 @@
 global:
-  scrape_interval:     15s
+  scrape_interval: 15s
   evaluation_interval: 15s
 
   # Attach these labels to any time series or alerts when communicating with
@@ -12,11 +12,11 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: [ 'localhost:9090' ]
 
-  - job_name: 'app'
-    scrape_interval: 1s
-    metrics_path: '/q/metrics'
+  - job_name: 'service-app-repository-payment'
+    scrape_interval: 5s
+    metrics_path: /metrics
     static_configs:
-      - targets: ['localhost:8080']
-#      - targets: ['host.containers.internal:8080','host.docker.internal:8080']
+      - targets:
+          - localhost:8000

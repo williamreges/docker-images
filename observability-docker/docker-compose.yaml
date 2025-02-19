@@ -4,10 +4,11 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    restart: always
     network_mode: host
-    expose:
-      - 9090
+    ports:
+      - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
 
@@ -15,14 +16,16 @@ services:
     image: grafana/grafana
     container_name: grafana
     network_mode: host
-    expose:
-      - 3000
+    ports:
+      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_HOST_PROMETHEUS=http://localhost:9090
     volumes:
-      - './grafana/provisioning/datasources:/etc/grafana/provisioning/datasources'
       - './grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards'
+      - './grafana/provisioning/datasources:/etc/grafana/provisioning/datasources'
+      - './grafana/grafana.ini:/etc/grafana/grafana.ini'
     depends_on:
       - prometheus
