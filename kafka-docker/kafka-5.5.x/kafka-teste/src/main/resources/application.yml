@@ -13,16 +13,24 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
     properties:
+      security.protocol: SSL
+      ssl.truststore.location: file:./kafka-client.truststore.jks
+      ssl.truststore.password: Lalo@1609
+      ssl.keystore.location: file:./kafka-client.keystore.jks
+      ssl.keystore.password: Lalo@1609
+      ssl.key.password: Lalo@1609
+
       schema:
         registry:
           url: http://localhost:8081
       specific:
         avro:
           reader: true
-#      auto:
-#        register:
-#          schemas: true
+      auto:
+        register:
+          schemas: true
 
 topic:
   payment-extrato: payment-extrato

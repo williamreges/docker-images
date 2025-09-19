@@ -1,0 +1,105 @@
+version: '3'
+
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:5.5.1
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9093:9093"   # SSL listener exposed
+      - "29092:29092" # optional non-SSL internal
+      - "9101:9101"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+
+      # Listen on SSL port and (optionally) a PLAINTEXT host port
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092,SSL://broker:9093
+
+      # SSL keystore/truststore (mounted below)
+      KAFKA_SSL_CLIENT_AUTH: 'required'
+      KAFKA_SSL_KEYSTORE_FILENAME: 'kafka-server.keystore.jks'
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: 'kafka_server_keystore_credentials'
+      KAFKA_SSL_KEY_CREDENTIALS: 'kafka_server_sslkey_credentials'
+      KAFKA_SSL_TRUSTSTORE_FILENAME: 'kafka-server.truststore.jks'
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: 'kafka_server_truststore_credentials'
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_JMX_PORT: 9101
+    volumes:
+      - ./secrets:/etc/kafka/secrets:ro
+    command:
+      - bash
+      - -c
+      - |
+        ((sleep 30;
+        kafka-topics --bootstrap-server localhost:29092 --create --topic first-topic --replication-factor 1 --partitions 1;
+        kafka-topics --bootstrap-server localhost:29092 --create --topic payment-extrato --replication-factor 1 --partitions 1;
+        kafka-topics --bootstrap-server localhost:29092 --create --topic payment-extrato-dlq --replication-factor 1 --partitions 1;
+        kafka-topics --bootstrap-server localhost:29092 --create --topic payment-extrato-retry --replication-factor 1 --partitions 1
+        )&)
+        /etc/confluent/docker/run
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.5.1
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - broker
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+
+      # Use Kafka bootstrap over SSL (this is the critical part)
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'SSL://broker:9093'
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: 'SSL'
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_LOCATION: /etc/schema-registry/secrets/schema-registry.truststore.jks
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_PASSWORD: 'changeit'
+
+      # NOTE: We keep the registry HTTP endpoint on plain 8081 here. If you want HTTPS for Schema Registry,
+      # see the optional instructions below.
+    volumes:
+      - ./certs/schema-registry.truststore.jks:/etc/schema-registry/secrets/schema-registry.truststore.jks:ro
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:5.5.1
+    hostname: control-center
+    container_name: control-center
+    depends_on:
+      - zookeeper
+      - broker
+      - schema-registry
+    ports:
+      - "9021:9021"
+    restart: on-failure
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'SSL://broker:9093'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      CONTROL_CENTER_CONNECT_CLUSTER: 'connect:8083'
+      CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
+      CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      PORT: 9021
