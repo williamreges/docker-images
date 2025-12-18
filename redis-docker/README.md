@@ -22,14 +22,20 @@ Redis é um banco de dados em memória de código aberto, estruturado como armaz
 
 ## Referências
 
-* [Tutorial Redis](https://www.tutorialspoint.com/redis/index.html)
-
+* [Tutorial Points Redis](https://www.tutorialspoint.com/redis/index.htm)
+* [Spring Data Redis](https://docs.spring.io/spring-data/redis/reference/redis.html)
 
 ### Library Lettuce
-* [Lettuce Guide](https://redis.io/docs/latest/develop/clients/lettuce/)
+* [Lettuce Guide Java](https://redis.io/docs/latest/develop/clients/lettuce/)
 * [Lettuce Redis](https://redis.github.io/lettuce/)
-* [Getting Started](https://redis.github.io/lettuce/getting-started/)
-* [Connection Redis](https://redis.github.io/lettuce/user-guide/connecting-redis/)
-* [Authentication](https://redis.github.io/lettuce/user-guide/connecting-redis/#authentication)
-* [SSL Connection](https://redis.github.io/lettuce/advanced-usage/#ssl-connections)
+* [Lettuce Getting Started](https://redis.github.io/lettuce/getting-started/)
+* [Lettuce Connection Redis](https://redis.github.io/lettuce/user-guide/connecting-redis/)
+* [Lettuce Authentication](https://redis.github.io/lettuce/user-guide/connecting-redis/#authentication)
+* [Lettuce SSL Connection](https://redis.github.io/lettuce/advanced-usage/#ssl-connections)
+* [Lettuce TLS](https://redis.github.io/lettuce/advanced-usage/#starttls)
+
+### Library Jedis
+* [Jedis Guide Java](https://redis.io/docs/latest/develop/clients/jedis/)
+* [Jedis Getting started](https://redis.github.io/jedis/)
+* [Jedis GitHub](https://github.com/redis/jedis)
 
