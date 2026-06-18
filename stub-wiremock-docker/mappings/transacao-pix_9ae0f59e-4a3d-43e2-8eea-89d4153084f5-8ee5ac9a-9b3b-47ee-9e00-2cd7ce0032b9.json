@@ -1,0 +1,21 @@
+{
+  "id" : "8ee5ac9a-9b3b-47ee-9e00-2cd7ce0032b9",
+  "name" : "transacao-pix_9ae0f59e-4a3d-43e2-8eea-89d4153084f5",
+  "request" : {
+    "url" : "/transacao-pix/9ae0f59e-4a3d-43e2-8eea-89d4153084f5",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"codigoTrancacao\":\"9ae0f59e-4a3d-43e2-8eea-89d4153084f5\",\"codigoPessoa\":\"0af62598-25cd-4007-ad1e-c271b0a645ed\",\"valorTrancacao\":64206.00,\"dataTrancacao\":\"2024-05-14T12:53:08.142\",\"codigoBeneficiario\":\"161bed85-7b6b-4804-921e-388cdf707b05\",\"mensagemTransacao\":\"PIX pagamento do carro\"}",
+    "headers" : {
+      "Keep-Alive" : "timeout=60",
+      "Vary" : [ "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers" ],
+      "Date" : "Thu, 18 Jun 2026 16:04:57 GMT",
+      "Content-Type" : "application/json"
+    }
+  },
+  "uuid" : "8ee5ac9a-9b3b-47ee-9e00-2cd7ce0032b9",
+  "persistent" : true,
+  "insertionIndex" : 3
+}

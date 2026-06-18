@@ -1,0 +1,26 @@
+{
+  "id" : "ce6d50ad-0e5f-4562-8b3c-87cac2d3d5d2",
+  "name" : "transacao-pix",
+  "request" : {
+    "url" : "/transacao-pix",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n\t\"codigoPessoa\": \"0af62598-25cd-4007-ad1e-c271b0a645ed\",\n\t\"valorTrancacao\": 64206.0,\n\t\"dataTrancacao\": \"2024-05-14T12:53:08.142\",\n\t\"codigoBeneficiario\": \"161bed85-7b6b-4804-921e-388cdf707b05\",\n\t\"mensagemTransacao\": \"PIX pagamento do carro\"\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 201,
+    "body" : "9ae0f59e-4a3d-43e2-8eea-89d4153084f5",
+    "headers" : {
+      "Keep-Alive" : "timeout=60",
+      "Vary" : [ "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers" ],
+      "Date" : "Thu, 18 Jun 2026 16:04:35 GMT",
+      "Content-Type" : "text/plain;charset=UTF-8"
+    }
+  },
+  "uuid" : "ce6d50ad-0e5f-4562-8b3c-87cac2d3d5d2",
+  "persistent" : true,
+  "insertionIndex" : 4
+}

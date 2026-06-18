@@ -1,0 +1,15 @@
+{
+  "id" : "dec243d8-d568-485a-b08b-e60b54588d00",
+  "name" : "transacao-pix_cab4c929-ecfc-49cc-b16e-be23b2828d96",
+  "request" : {
+    "url" : "/transacao-pix/cab4c929-ecfc-49cc-b16e-be23b2828d96",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 500,
+    "base64Body" : "TmV0d29yayBmYWlsdXJlIHRyeWluZyB0byBtYWtlIGEgcHJveGllZCByZXF1ZXN0IGZyb20gV2lyZU1vY2sgdG8gaHR0cDovL2xvY2FsaG9zdDo4MTAwL3RyYW5zYWNhby1waXgvY2FiNGM5MjktZWNmYy00OWNjLWIxNmUtYmUyM2IyODI4ZDk2DQpDb25uZWN0IHRvIGh0dHA6Ly9sb2NhbGhvc3Q6ODEwMCBmYWlsZWQ6IENvbm5lY3Rpb24gcmVmdXNlZCAoQ29ubmVjdGlvbiByZWZ1c2VkKQ=="
+  },
+  "uuid" : "dec243d8-d568-485a-b08b-e60b54588d00",
+  "persistent" : true,
+  "insertionIndex" : 1
+}
