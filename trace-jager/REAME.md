@@ -10,16 +10,22 @@ Aqui está a forma mais rápida e padrão de fazer isso funcionar no seu dia a d
 
 A forma recomendada pela própria [documentação da JetBrains](https://www.jetbrains.com/help/idea/open-telemetry-tracing-and-metrics.html) e do Jaeger é usar a imagem `all-in-one`. Você pode abrir o terminal integrado do IntelliJ e executar a composição disponível neste projeto:
 
-O arquivo `docker-compose.yml` configura o serviço `jaeger` com a imagem `jaegertracing/all-in-one:latest`. Abra o terminal no diretório do projeto e execute:
+O arquivo `docker-compose.yml` configura o serviço `jaeger` com a imagem `jaegertracing/all-in-one:1.38`. Abra o terminal no diretório do projeto e execute:
 
 ```bash
 docker compose up -d
 ```
 
-O Compose inicia o serviço com as mesmas portas do comando direto:
+O Compose inicia o serviço com as portas e variáveis abaixo:
 
-* **`16686`**: porta onde você vai acessar a interface visual (UI).
+* **`6831` e `6832`**: portas UDP para os agentes Jaeger.
+* **`5778`**: porta para o endpoint de métricas.
+* **`16686`**: Porta onde você vai acessar a interface visual (UI).
 * **`4317`** (gRPC) e **`4318`** (HTTP): Portas que servem para receber os dados do OpenTelemetry.
+* **`14250`, `14268` e `14269`**: portas de coleta do Jaeger.
+* **`9411`**: Porta do endpoint HTTP do Zipkin e do collector Zipkin.
+
+A variável `COLLECTOR_ZIPKIN_HTTP_PORT=9411` e `COLLECTOR_OTLP_ENABLED=true` também são configuradas no serviço.
 
 Para verificar o estado do container, execute:
 
@@ -40,11 +46,19 @@ Você também pode iniciar o Jaeger diretamente com o Docker, sem usar a composi
 
 ```bash
 docker run -d --name jaeger \
+  -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 \
   -e COLLECTOR_OTLP_ENABLED=true \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
   -p 16686:16686 \
   -p 4317:4317 \
   -p 4318:4318 \
-  jaegertracing/all-in-one:latest
+  -p 14250:14250 \
+  -p 14268:14268 \
+  -p 14269:14269 \
+  -p 9411:9411 \
+  jaegertracing/all-in-one:1.38
 ```
 
 > Se o container já existir, execute `docker rm -f jaeger` antes de rodar o comando direto novamente.
@@ -63,11 +77,37 @@ Se você estiver usando a abordagem sem mexer no código (via agente Java):
    ```text
    -javaagent:/caminho/para/opentelemetry-javaagent.jar
    ```
-4. Adicione as seguintes **Environment Variables** (Variáveis de Ambiente):
-   ```text
-   OTEL_SERVICE_NAME=nome-da-sua-app
-   OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
-   ```
+4. Adicione as **Environment Variables** (Variáveis de Ambiente) da opção de exportação que deseja utilizar.
+
+### Exportação via gRPC
+
+Para enviar os spans usando gRPC, configure:
+
+```text
+OTEL_SERVICE_NAME=nome-da-sua-app
+OTEL_EXPORTER_OTLP_TRACES_PROTOCOL=grpc
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
+```
+
+### Exportação via HTTP/protobuf
+
+Para enviar os spans usando HTTP com o formato protobuf, configure as variáveis a seguir no IntelliJ, no campo de **Environment Variables**:
+
+```text
+OTEL_JAVAAGENT_DEBUG=false
+OTEL_LOGS_EXPORTER=none
+OTEL_METRICS_EXPORTER=none
+OTEL_SERVICE_NAME=app-repository-payment
+OTEL_TRACES_EXPORTER=otlp
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+```
+
+Estas variáveis desabilitam o debug do agente, impedem a exportação de logs e métricas e enviam somente os traces pelo endpoint OTLP da porta `4318`. O endpoint corresponde à porta HTTP/protobuf exposta pelo Jaeger.
+
+Os endpoints acima correspondem às portas expostas pelo Jaeger. Escolha apenas uma das duas opções e não configure os dois protocolos simultaneamente.
+
+## Exemplo de Configuração de variávies no Run do IntelliJ
+![alt text](image.png)
 
 ---
 
@@ -78,6 +118,22 @@ Se você estiver usando a abordagem sem mexer no código (via agente Java):
 3. Abra o seu navegador e acesse a interface local do Jaeger: **http://localhost:16686**.
 4. Sua aplicação aparecerá listada na barra lateral esquerda pronta para análise.
 
+### Exemplo:
+
+![alt text](image-1.png)
+
+Entrando no trace terá algo parecido abaixo:
+
+![alt text](image-2.png)
+
 ---
 
-> **Nota:** Se você quiser monitorar o próprio desempenho e os dados internos do IntelliJ, a IDE possui suporte nativo experimental para exportar suas próprias métricas de diagnóstico via OpenTelemetry para o Jaeger.
+## Referências
+
+- [Documentação oficial do Jaeger](https://www.jaegertracing.io/docs/)
+- [Documentação do Jaeger 1.38](https://www.jaegertracing.io/docs/1.38/)
+- [OpenTelemetry Java instrumentation](https://opentelemetry.io/docs/languages/java/)
+- [Configuração do agente Java OpenTelemetry](https://opentelemetry.io/docs/languages/java/configuration/)
+- [OpenTelemetry OTLP exporter](https://opentelemetry.io/docs/specs/otlp/)
+- [Documentação da JetBrains sobre OpenTelemetry](https://www.jetbrains.com/help/idea/open-telemetry-tracing-and-metrics.html)
+
