@@ -365,10 +365,8 @@ Com isso, o Grafana inicia com fontes de dados para Loki, Jaeger e Prometheus.
 O Prometheus fica disponível em `http://localhost:9090`; o endpoint de
 métricas exportado pelo Collector fica em `http://localhost:8889/metrics`.
 
-**Atenção:** a configuração atual em `prometheus/prometheus.yml` coleta
-`localhost:9090` dentro do container Prometheus, ou seja, coleta o próprio
-Prometheus. Para coletar as métricas do Collector, o target deve ser
-`otel-collector:8889`.
+O Prometheus está configurado para coletar métricas do Collector pelo target
+`otel-collector:8889`, usando a rede interna do Docker Compose.
 
 ------------------------------------------------------------------------
 
@@ -739,10 +737,8 @@ aplicação envia métricas:
 OTEL_METRICS_EXPORTER=otlp
 ```
 
-Em `prometheus/prometheus.yml`, configure o target `otel-collector:8889`
-para que Prometheus colete o endpoint do Collector. A configuração padrão
-atual está apontada para `localhost:9090` e, portanto, coleta somente o
-próprio Prometheus.
+Confirme que o target `otel-collector:8889` está acessível na página
+`http://localhost:9090/targets` do Prometheus.
 
 ------------------------------------------------------------------------
 
