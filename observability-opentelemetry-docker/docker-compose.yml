@@ -18,7 +18,7 @@ services:
     container_name: loki
     command: -config.file=/etc/loki/loki-config.yml
     volumes:
-      - ./loki-config.yml:/etc/loki/loki-config.yml
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml
       - loki-data:/loki
     ports:
       - "3100:3100"
@@ -38,7 +38,7 @@ services:
     container_name: otel-collector
     command: ["--config=/etc/otelcol-contrib/config.yml"]
     volumes:
-      - './otel-collector-config.yml:/etc/otelcol-contrib/config.yml'
+      - './otel/otel-collector-config.yml:/etc/otelcol-contrib/config.yml'
     ports:
       - "4317:4317"
       - "4318:4318"
@@ -47,7 +47,6 @@ services:
       - jaeger
       - loki
       - prometheus
-      - grafana
 
   grafana:
     image: grafana/grafana:latest
