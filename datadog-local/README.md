@@ -194,6 +194,7 @@ O caminho é apenas ilustrativo; use o local em que você salvou o arquivo.
 3. Localize **VM options**.
 4. Adicione os parâmetros abaixo, ajustando o caminho do JAR.
 
+![img.png](docs/img.png)
 Exemplo para Linux:
 
 ```bash
@@ -202,6 +203,7 @@ Exemplo para Linux:
 -Ddd.env=local
 -Ddd.version=1.0.0
 -Ddd.trace.agent.url=http://localhost:8126
+-Ddd.runtime.metrics.enabled=true
 ```
 
 Exemplo para Windows:
@@ -212,7 +214,25 @@ Exemplo para Windows:
 -Ddd.env=local
 -Ddd.version=1.0.0
 -Ddd.trace.agent.url=http://localhost:8126
+-Ddd.runtime.metrics.enabled=true
 ```
+
+### 🌱 Alternativa com variáveis de ambiente
+
+Também é possível configurar os mesmos valores em **Run → Edit Configurations → Environment variables**. Adicione cada variável à configuração de execução:
+
+```dotenv
+JAVA_TOOL_OPTIONS=-javaagent:/home/usuario/tools/dd-java-agent.jar
+DD_SERVICE=minha-aplicacao
+DD_ENV=local
+DD_VERSION=1.0.0
+DD_TRACE_AGENT_URL=http://localhost:8126
+DD_RUNTIME_METRICS_ENABLED=true
+```
+
+No Windows, ajuste o valor de `JAVA_TOOL_OPTIONS`, por exemplo: `-javaagent:C:\tools\dd-java-agent.jar`.
+
+`JAVA_TOOL_OPTIONS` faz a JVM carregar o tracer; as demais variáveis configuram serviço, ambiente, versão e endereço do Agent. Configure-as na execução da aplicação no IntelliJ, em vez de defini-las globalmente no sistema, para não afetar outros processos Java.
 
 Significado dos parâmetros:
 
@@ -223,6 +243,7 @@ Significado dos parâmetros:
 | `dd.env` | Identifica o ambiente como `local`. |
 | `dd.version` | Identifica a versão da aplicação. |
 | `dd.trace.agent.url` | Endereço do Agent que recebe os traces. |
+| `dd.runtime.metrics.enabled` / `DD_RUNTIME_METRICS_ENABLED` | Habilita métricas de runtime da JVM. |
 
 O endereço `localhost:8126` funciona porque a aplicação roda na máquina host e a porta do container foi publicada no host.
 
@@ -266,10 +287,13 @@ Após iniciar o Agent e executar a aplicação, gere tráfego fazendo chamadas a
 Na interface Datadog, consulte:
 
 - **APM → Services:** procure pelo serviço definido em `dd.service`.
+![img_1.png](docs/img_1.png)
 - **APM → Traces:** visualize os rastreamentos das requisições.
+![img_2.png](docs/img_2.png)
 - **Metrics → Explorer:** pesquise métricas de runtime e APM disponíveis para a conta.
+![img_3.png](docs/img_3.png)
 - **Logs → Explorer:** consulte os logs coletados dos containers.
-
+![img_4.png](docs/img_4.png)
 Use `env:local` e o nome do serviço para filtrar os dados, quando esses atributos estiverem disponíveis.
 
 A primeira visualização pode levar alguns minutos e depende da chegada de telemetria. Uma aplicação sem requisições pode não produzir traces para exibição.
