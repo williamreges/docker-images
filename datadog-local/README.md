@@ -121,6 +121,15 @@ DD_SITE=datadoghq.com
 
 Preencha `DD_API_KEY` com a API Key da sua organização. O valor de `DD_SITE` deve corresponder ao site da sua conta Datadog (por exemplo, `datadoghq.com` ou `datadoghq.eu`). Se quiser, informe `DD_HOSTNAME` com um nome estável para identificar a máquina.
 
+#### Como obter a API Key
+
+1. Entre na sua conta Datadog usando o site da sua organização.
+2. Abra **Organization Settings → API Keys**.
+3. Crie uma chave para este Agent, por exemplo `datadog-local-agent`, ou copie uma API Key existente que você tenha permissão para usar.
+4. Copie a chave e cole o valor em `DD_API_KEY` no arquivo `.env`.
+
+Use uma **API Key**, não uma **Application Key**. Consulte a [documentação oficial de API e Application Keys](https://docs.datadoghq.com/account_management/api-app-keys/) se precisar de mais detalhes.
+
 **Segurança:** não coloque a API Key no `docker-compose.yml`, não a compartilhe e não faça commit do `.env`.
 
 ### 🚫 `.gitignore`
