@@ -204,6 +204,7 @@ Exemplo para Linux:
 -Ddd.version=1.0.0
 -Ddd.trace.agent.url=http://localhost:8126
 -Ddd.runtime.metrics.enabled=true
+-Ddd.logs.injection=true
 ```
 
 Exemplo para Windows:
@@ -215,6 +216,7 @@ Exemplo para Windows:
 -Ddd.version=1.0.0
 -Ddd.trace.agent.url=http://localhost:8126
 -Ddd.runtime.metrics.enabled=true
+-Ddd.logs.injection=true
 ```
 
 ### 🌱 Alternativa com variáveis de ambiente
@@ -228,6 +230,7 @@ DD_ENV=local
 DD_VERSION=1.0.0
 DD_TRACE_AGENT_URL=http://localhost:8126
 DD_RUNTIME_METRICS_ENABLED=true
+DD_LOGS_INJECTION=true
 ```
 
 No Windows, ajuste o valor de `JAVA_TOOL_OPTIONS`, por exemplo: `-javaagent:C:\tools\dd-java-agent.jar`.
@@ -244,10 +247,13 @@ Significado dos parâmetros:
 | `dd.version` | Identifica a versão da aplicação. |
 | `dd.trace.agent.url` | Endereço do Agent que recebe os traces. |
 | `dd.runtime.metrics.enabled` / `DD_RUNTIME_METRICS_ENABLED` | Habilita métricas de runtime da JVM. |
+| `dd.logs.injection` / `DD_LOGS_INJECTION` | Injeta IDs de trace e span no contexto dos logs para correlacioná-los com traces. |
 
 O endereço `localhost:8126` funciona porque a aplicação roda na máquina host e a porta do container foi publicada no host.
 
 Para enviar métricas de runtime da JVM, habilite a configuração descrita na próxima seção. A porta UDP `8125` também é publicada em `localhost` para essa finalidade.
+
+A injeção de logs adiciona contexto de trace/span aos logs, mas não habilita a coleta nem o envio deles. O framework e o formato de logging da aplicação também precisam incluir esse contexto na saída.
 
 Depois, salve a configuração e inicie a aplicação pelo IntelliJ.
 
