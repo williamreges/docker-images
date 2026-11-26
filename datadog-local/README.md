@@ -132,11 +132,7 @@ Use uma **API Key**, não uma **Application Key**. Consulte a [documentação of
 
 **Segurança:** não coloque a API Key no `docker-compose.yml`, não a compartilhe e não faça commit do `.env`.
 
-### 🚫 `.gitignore`
 
-```gitignore
-.env
-```
 
 ## 4. ▶️ Iniciar e administrar o Agent
 
@@ -324,6 +320,113 @@ A primeira visualização pode levar alguns minutos e depende da chegada de tele
 | Métricas customizadas | Contagem de pedidos, regra de negócio, duração de operação específica | Instrumentação da aplicação ou integração apropriada |
 
 O Compose habilita traces APM, coleta logs e métricas dos containers e permite que a JVM envie métricas de runtime quando essa opção é habilitada no tracer. Ele não cria automaticamente métricas de negócio personalizadas.
+
+Para publicar métricas de negócio, a aplicação precisa registrá-las e enviá-las ao Agent. Uma opção para Spring Boot é usar Micrometer com o protocolo DogStatsD.
+
+### 📦 Dependências Maven
+
+Se ainda não estiverem no projeto, adicione o Actuator do Spring Boot e o registry StatsD do Micrometer. Quando o projeto usa o gerenciamento de dependências do Spring Boot, não é necessário informar as versões:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-statsd</artifactId>
+</dependency>
+```
+
+### ⚙️ Configuração em `application.yml`
+
+Configure o registry para enviar métricas DogStatsD para a porta UDP do Agent:
+
+```yaml
+management:
+  statsd:
+    metrics:
+      export:
+        enabled: true
+        host: localhost
+        port: 8125
+        flavor: datadog
+        step: 10s
+```
+
+Como a aplicação deste exemplo roda no host, use `localhost`. O intervalo `step` define a frequência de publicação.
+
+### 🐳 Configuração do Docker Compose
+
+O Agent precisa aceitar tráfego DogStatsD externo ao container e publicar a porta UDP `8125`. Essas opções já estão no [Compose deste projeto](./docker-compose.yml):
+
+```yaml
+environment:
+  DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+ports:
+  - "127.0.0.1:8125:8125/udp"
+```
+
+### 📊 Exemplo de contador customizado
+
+Este contador registra pedidos processados com sucesso:
+
+```java
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PedidoService {
+
+    private final Counter pedidosProcessados;
+
+    public PedidoService(MeterRegistry registry) {
+        this.pedidosProcessados = Counter.builder("pedidos.processados")
+                .description("Quantidade de pedidos processados")
+                .register(registry);
+    }
+
+    public void processarPedido() {
+        // Execute o processamento do pedido antes de incrementar o contador.
+        pedidosProcessados.increment();
+    }
+}
+```
+
+Após executar o método, procure `pedidos.processados` em **Metrics → Explorer**. A publicação pode levar até o intervalo configurado em `step`. Prefira tags com valores limitados; IDs de pedidos e usuários podem gerar cardinalidade muito alta.
+
+O fluxo é independente e complementar ao APM: o Java Agent envia traces e métricas de runtime, enquanto Micrometer envia as métricas customizadas da aplicação pelo DogStatsD.
+
+```text
+       INTELLIJ IDEA
+             |
+             v
+        SPRING BOOT
+             |
+       +-----+------+
+       |            |
+       v            v
+  Java Agent    Micrometer
+       |            |
+       v            v
+  APM Traces    DogStatsD
+       |            |
+       v            v
+       DATADOG AGENT
+       (DOCKER)
+             |
+             v
+        DATADOG CLOUD
+             |
+             v
+         DASHBOARD
+```
+
+Documentação:
+
+- [Micrometer com Datadog](https://docs.datadoghq.com/metrics/guide/micrometer/)
+- [Métricas do Spring Boot Actuator](https://docs.spring.io/spring-boot/reference/actuator/metrics.html)
 
 ## 10. 💻 Linux e Windows: observações
 
